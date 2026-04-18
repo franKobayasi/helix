@@ -49,49 +49,89 @@ Every completed task, every decision, every correction — all become part of th
 
 ## Architecture
 
-### Four Core Layers
+### Document-First Design
 
-| Layer | Purpose | Key Components |
-|---|---|---|
-| **Workflow** | Structured development process | Phases, gates, checkpoints |
-| **SKILL** | Reusable knowledge units | Encapsulated best practices |
-| **Memory** | Persistent knowledge | Domain facts, style, decisions |
-| **Agent** | Execution engine | Claude Code, Codex, others |
+Helix is built on **documents**, not code. Documents define how development happens; scripts are secondary.
+
+```
+┌─────────────────────────────────────────────┐
+│              Core: Document System          │
+├─────────────────────────────────────────────┤
+│                                             │
+│  AGENT.md (Entry Point)                     │
+│  ├── Defines overall execution flow         │
+│  ├── Calls Flows                            │
+│  ├── Calls SKILLs                           │
+│  └── Orchestrates multiple Agent roles      │
+│                                             │
+│  Flow/ (Procedures)                         │
+│  ├── Define phases: need→clarify→build→review│
+│  ├── Checkpoints between phases              │
+│  └── Handoffs between Agents                │
+│                                             │
+│  SKILL/ (Capabilities)                       │
+│  ├── Skills used during development phases  │
+│  ├── Callable by Agents                     │
+│  └── Bundled / Generated / Imported         │
+│                                             │
+├─────────────────────────────────────────────┤
+│              Secondary: Scripts             │
+├─────────────────────────────────────────────┤
+│  scripts/                                    │
+│  ├── Scripts paired with SKILLs             │
+│  ├── Environment initialization               │
+│  └── Utility scripts for various scenarios   │
+└─────────────────────────────────────────────┘
+```
+
+### Agent Roles
+
+Multiple `AGENT.md` files can exist, each representing a different role in the development process:
+
+| Agent | Responsibility |
+|---|---|
+| **Architect** | Requirements analysis, system design |
+| **Coder** | Implementation, follows coding standards |
+| **Reviewer** | Code review, quality gates |
+| **Documenter** | Documentation, memory updates |
 
 ### How They Connect
 
 ```
-Developer's Request
+Developer Request
         │
         ▼
-   ┌─────────┐     Ask     ┌──────────┐
-   │ WORKFLOW │ ────────▶  │  Agent   │
-   │ (Process) │ ◀──────── │(Execution)│
-   └─────────┘   Respond   └──────────┘
-        │
-        │ Reuse / Update
-        ▼
-   ┌─────────┐
-   │  SKILL   │  ← Domain knowledge & best practices
-   └─────────┘
-        │
-        │ Accumulate
-        ▼
-   ┌─────────┐
-   │ MEMORY  │  ← Project style, patterns, decisions
-   └─────────┘
+   ┌────────────┐     Orchestrates     ┌──────────────┐
+   │  AGENT.md   │ ──────────────────▶ │ Claude Code   │  ← Primary Engine
+   │  (Entry)    │ ◀────────────────── │              │
+   └────────────┘     Uses             └──────────────┘
+        │                    │
+        │                    ▼
+        │            ┌────────────┐
+        │            │   Flows    │  ← Procedure definitions
+        │            └────────────┘
+        │                    │
+        │                    ▼
+        │            ┌────────────┐
+        └───────────▶│   SKILLs   │  ← Task-specific capabilities
+                     └────────────┘
+                            │
+                            ▼
+                     ┌────────────┐
+                     │   Memory   │  ← Accumulated knowledge
+                     └────────────┘
 ```
 
-### Workflow Design
+### Primary Execution Engine
 
-A Helix workflow defines how Agent and developer interact:
+**Claude Code** is the primary execution target for Phase 1.
 
-1. **Requirement** — Developer states the goal
-2. **Clarification** — Agent asks questions, proposes approach
-3. **Confirmation** — Developer approves or adjusts
-4. **Implementation** — Agent builds with continuous checks
-5. **Review** — Developer validates output
-6. **Reflection** — Agent summarizes what was learned
+```bash
+# Helix orchestrates Claude Code via:
+claude exec "<instructions from AGENT.md>"
+```
+
+Other Agents (Codex, Pi, etc.) can be added in future phases.
 
 ### SKILL System
 
@@ -114,72 +154,89 @@ SKILLs can be:
 - **Generated** — Helix auto-creates from development experience  
 - **Imported** — from community or team shared libraries
 
-### Memory Accumulation
+### Document Types
 
-Helix maintains multiple memory layers:
+### AGENT.md (Entry Point)
+The main entry for each Agent role. Defines:
+- Role's purpose and responsibilities
+- How to interact with Developer
+- Which Flows to call and when
+- How to use SKILLs
+- How to update Memory after tasks
 
-| Memory Type | Scope | Updates |
-|---|---|---|
-| **Session** | Current task | Real-time |
-| **Project** | Single project | End of task |
-| **Domain** | Topic area | Weekly distillation |
-| **Global** | Cross-project patterns | Monthly review |
+### Flow/ (Procedures)
+Structured development phases stored as Markdown files:
+- Phase definitions and transitions
+- Checkpoints and gates
+- Expected outputs from each phase
+- Handoff conditions between roles
 
----
+### SKILL/ (Capabilities)
+Reusable skill units callable during development:
+- **Bundled** — ship with Helix
+- **Generated** — auto-created from experience
+- **Imported** — from community
 
-## Development Flow
+Each SKILL is a `.md` file with clear usage context.
 
-### Starting a New Project
+### Memory/
+Accumulated knowledge organized by scope:
+- `project/` — single project knowledge
+- `domain/` — topic-specific patterns
+- `global/` — cross-project learnings
 
-```bash
-helix init --project my-app --template express-api
-```
-
-This creates:
-```
-my-app/
-├── .helix/
-│   ├── workflows/     # Project-specific workflows
-│   ├── skills/       # Project knowledge
-│   ├── memory/       # Accumulated understanding
-│   └── config.yaml   # Project configuration
-├── src/              # Your code
-└── README.md
-```
-
-### Typical Session
-
-```
-Developer: "Add user authentication to the API"
-
-Helix Workflow:
-1. Load project memory (past decisions, existing patterns)
-2. Load relevant SKILLs (auth patterns, API conventions)
-3. Clarify: "Password-based or OAuth? Session or JWT?"
-4. Propose: Shows approach with relevant project examples
-5. Build: Implements with continuous validation
-6. Reflect: Updates memory with new patterns learned
-```
+### scripts/
+Shell scripts for:
+- SKILL execution helpers
+- Environment initialization
+- Utility operations
 
 ---
 
-## Goals
+## Project Structure
 
-### Phase 1 (Current)
-- Project scaffolding with `helix init`
-- Basic workflow engine (requirement → implementation)
-- Memory persistence (project-level)
-- SKILL generation from development
+```
+helix/
+├── README.md              # This file
+├── AGENT.md              # Main entry point (Coordination Agent)
+├── flows/                # Development phase definitions
+│   ├── requirement.md    # Requirement gathering flow
+│   ├── clarify.md        # Clarification phase
+│   ├── build.md          # Implementation phase
+│   └── review.md        # Review and validation phase
+├── skills/              # Reusable skill library
+│   ├── coding-standards.md
+│   ├── testing-patterns.md
+│   └── api-design.md
+├── memory/              # Accumulated knowledge
+│   ├── project/
+│   ├── domain/
+│   └── global/
+└── scripts/             # Utility scripts
+    ├── init.sh
+    └── skill-helpers/
+```
 
-### Phase 2
-- Cross-project memory distillation
-- Multi-Agent collaboration patterns
-- Team-shared SKILL libraries
+---
 
-### Phase 3
-- Autonomous optimization (Agent suggests workflow improvements)
-- External knowledge integration (docs, tickets, PRs)
-- Full autonomous development capability
+## Core Principles
+
+1. **Document-First** — Everything starts with documents. Scripts are secondary.
+2. **Claude Code Target** — Phase 1 targets Claude Code as primary Agent engine.
+3. **Memory Accumulates** — Each session contributes to persistent knowledge.
+4. **Flow-Driven** — Development follows defined procedures, not free-form.
+5. **SKILL Reuse** — Skills compound; don't redo what's already learned.
+
+---
+
+## Roadmap
+
+### Phase 1 — Foundation
+- [ ] Define core AGENT.md structure
+- [ ] Design essential Flows (requirement, build, review)
+- [ ] Create starter SKILLs library
+- [ ] Memory system implementation
+- [ ] Claude Code integration
 
 ---
 
