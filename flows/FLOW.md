@@ -18,14 +18,13 @@ Requirement  →  Spec  →  Plan  →  Task  →  Implement  →  QA  →  PR  
 
 | Phase | Input | Output | Trigger Next |
 |---|---|---|---|
-| **01-Requirement** | User's raw request | Structured requirement doc | `spec:develop` |
-| **02-Spec** | Requirement doc | Technical specification | `plan:develop` |
-| **03-Plan** | Spec doc | Implementation plan | `task:breakdown` |
-| **04-Task** | Plan doc | Task documentation | `implement:start` |
-| **05-Implement** | Task doc | Code + test | `qa:start` |
-| **06-QA** | Implementation | QA report + fixes | `pr:prepare` |
-| **07-PR** | QA passed | Pull request | `docs:update` |
-| **08-Update** | PR merged | Memory + SKILL updates | — |
+| **01-ReqSpec** | User's raw request | Combined requirement + specification | `plan:develop` |
+| **02-Plan** | Approved spec | Implementation plan | `task:breakdown` |
+| **03-Task** | Plan doc | Task documentation | `implement:start` |
+| **04-Implement** | Task doc | Code + test | `qa:start` |
+| **05-QA** | Implementation | QA report + fixes | `pr:prepare` |
+| **06-PR** | QA passed | Pull request | `docs:update` |
+| **07-Update** | PR merged | Memory + SKILL updates | — |
 
 ---
 
@@ -93,14 +92,13 @@ Update       ── Documentation updated ────────────�
 
 ## Flow Files
 
-- `01-requirement.md` — Requirement gathering flow
-- `02-spec.md` — Specification development flow
-- `03-plan.md` — Implementation planning flow
-- `04-task.md` — Task breakdown flow
-- `05-implement.md` — Implementation flow
-- `06-qa.md` — QA & validation flow
-- `07-pr.md` — Pull request preparation flow
-- `08-update.md` — Documentation & memory update flow
+- `01-req-spec.md` — Combined requirement + specification
+- `02-plan.md` — Implementation planning
+- `03-task.md` — Task breakdown
+- `04-implement.md` — Code implementation
+- `05-qa.md` — QA & validation
+- `06-pr.md` — Pull request preparation
+- `07-update.md` — Documentation & memory update
 
 ---
 
