@@ -27,7 +27,3 @@ jobs:
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Display package info
-        run: |
-          echo "Published @franKobayasi/helix@$(node -p \"require('./package.json').version\")"
