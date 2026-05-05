@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.4] - 2026-05-06
+
+### Changed
+
+- Slash command format: `/helix:dev` → `/helix dev` (nested format for Claude Code compatibility)
+- **AGENT.md**, **README.md**, **CLAUDE.md**, **bin/helix.js** - Updated all command references
+
+### Added
+
+- **skills/bundled/helix/SKILL.md** - Helix skill with all command handlers (`/helix dev`, `/helix status`, `/helix resume`, etc.)
+- **registerHelixSkill()** in `bin/helix.js` - Auto-register skill symlink at `~/.claude/skills/helix`
+- Display version number during `npx @franKobayasi/helix` initialization
+
 ## [1.1.3] - 2026-05-06
 
 ### Fixed

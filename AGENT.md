@@ -57,26 +57,26 @@
 
 ## Slash Command
 
-所有 Helix 命令皆以 `/helix:` 開頭：
+所有 Helix 命令皆以 `/helix ` 開頭（巢狀格式）：
 
 | Command | 說明 |
 |---------|------|
-| `/helix:dev <需求描述>` | 觸發 Helix 開發流程，自動推進 |
-| `/helix:scope` | Scope Classification（Lightweight/Standard/Deep） |
-| `/helix:spec` | Spec 階段（需求理解 → 技術規格） |
-| `/helix:plan` | Plan 階段（Spec 拆解為 Task） |
-| `/helix:implement` | Implement 階段（TDD + 即時 QA 驗收） |
-| `/helix:qa` | QA 驗收（Task Verification） |
-| `/helix:verify` | 整合驗證（Integration Verification） |
-| `/helix:review` | 程式碼審查 |
-| `/helix:handoff` | 交付準備 |
-| `/helix:status` | 查看當前進度狀態 |
-| `/helix:resume` | 從斷點恢復執行 |
-| `/helix:memory` | 更新 Memory 和 SKILL |
+| `/helix dev <需求>` | 觸發 Helix 開發流程，自動推進 |
+| `/helix scope` | Scope Classification（Lightweight/Standard/Deep） |
+| `/helix spec` | Spec 階段（需求理解 → 技術規格） |
+| `/helix plan` | Plan 階段（Spec 拆解為 Task） |
+| `/helix implement` | Implement 階段（TDD + 即時 QA 驗收） |
+| `/helix qa` | QA 驗收（Task Verification） |
+| `/helix verify` | 整合驗證（Integration Verification） |
+| `/helix review` | 程式碼審查 |
+| `/helix handoff` | 交付準備 |
+| `/helix status` | 查看當前進度狀態 |
+| `/helix resume` | 從斷點恢復執行 |
+| `/helix memory` | 更新 Memory 和 SKILL |
 
 ### 自動推進邏輯
 
-當使用者輸入 `/helix:dev <需求描述>` 時，Helix 自動：
+當使用者輸入 `/helix dev <需求描述>` 時，Helix 自動：
 
 1. 解析需求內容
 2. 執行 Scope Classification
@@ -86,9 +86,9 @@
 
 ### 特殊情況
 
-- `/helix:dev` 後可隨時輸入 `/helix:status` 查看進度
-- 中斷後輸入 `/helix:resume` 從斷點繼續
-- 特殊情況可強制指定階段：`/helix:spec`、`/helix:plan` 等
+- `/helix dev` 後可隨時輸入 `/helix status` 查看進度
+- 中斷後輸入 `/helix resume` 從斷點繼續
+- 特殊情況可強制指定階段：`/helix spec`、`/helix plan` 等
 
 ---
 

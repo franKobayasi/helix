@@ -25,7 +25,7 @@ Knowledge compounds over time.
 npx github:frankobayasi/helix
 ```
 
-This will automatically create the Helix directory structure and config file in your current project.
+This will automatically create the Helix directory structure, config file, and register the Helix skill in your current project.
 
 ### Manual Setup
 
@@ -39,7 +39,7 @@ cd /path/to/your/project
 在 Claude Code 中說：
 
 ```
-start:helix
+/helix dev <需求描述>
 ```
 
 ### 3. 流程自動運行
@@ -169,26 +169,26 @@ QA Agent 驗收時**不看** Dev Agent 的自驗報告，獨立形成判斷。
 
 ## Slash Command
 
-所有 Helix 命令皆以 `/helix:` 開頭：
+所有 Helix 命令皆以 `/helix ` 開頭（巢狀格式）：
 
 | Command | 說明 |
 |---------|------|
-| `/helix:dev <需求>` | 觸發 Helix 開發流程，自動推進 |
-| `/helix:scope` | Scope Classification |
-| `/helix:spec` | Spec 階段（需求 → 技術規格） |
-| `/helix:plan` | Plan 階段（拆解為 Task） |
-| `/helix:implement` | 實作階段（TDD + QA 驗收） |
-| `/helix:qa` | QA 驗收 |
-| `/helix:verify` | 整合驗證 |
-| `/helix:review` | 程式碼審查 |
-| `/helix:handoff` | 交付準備 |
-| `/helix:status` | 查看當前進度 |
-| `/helix:resume` | 從斷點恢復 |
-| `/helix:memory` | 更新 Memory 和 SKILL |
+| `/helix dev <需求>` | 觸發 Helix 開發流程，自動推進 |
+| `/helix scope` | Scope Classification |
+| `/helix spec` | Spec 階段（需求 → 技術規格） |
+| `/helix plan` | Plan 階段（拆解為 Task） |
+| `/helix implement` | 實作階段（TDD + QA 驗收） |
+| `/helix qa` | QA 驗收 |
+| `/helix verify` | 整合驗證 |
+| `/helix review` | 程式碼審查 |
+| `/helix handoff` | 交付準備 |
+| `/helix status` | 查看當前進度 |
+| `/helix resume` | 從斷點恢復 |
+| `/helix memory` | 更新 Memory 和 SKILL |
 
 ### 自動推進
 
-使用 `/helix:dev <需求描述>` 啟動後，流程會自動推進各階段，僅在需要人類決策時暂停詢問。
+使用 `/helix dev <需求描述>` 啟動後，流程會自動推進各階段，僅在需要人類決策時暂停詢問。
 
 ---
 
