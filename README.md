@@ -167,23 +167,28 @@ QA Agent 驗收時**不看** Dev Agent 的自驗報告，獨立形成判斷。
 
 ---
 
-## Command Syntax
+## Slash Command
 
-| 命令 | 說明 |
-|------|------|
-| `start:helix` | 初始化 Helix 流程 |
-| `scope:classify` | Scope Classification（自動觸發） |
-| `spec:understand` | Stage A: 需求理解摘要 |
-| `spec:develop` | Stage B: 技術方案 |
-| `plan:develop` | Plan 拆解 |
-| `task:breakdown` | Task 拆分 |
-| `implement:start` | 開始實作 |
-| `qa:start` | QA 驗收 |
-| `verify:integration` | 整合驗證 |
-| `review:code` | 程式碼審查 |
-| `handoff:prepare` | 交付準備 |
-| `update:memory` | 更新 Memory 和 SKILL |
-| `resume` | 從斷點恢復 |
+所有 Helix 命令皆以 `/helix:` 開頭：
+
+| Command | 說明 |
+|---------|------|
+| `/helix:dev <需求>` | 觸發 Helix 開發流程，自動推進 |
+| `/helix:scope` | Scope Classification |
+| `/helix:spec` | Spec 階段（需求 → 技術規格） |
+| `/helix:plan` | Plan 階段（拆解為 Task） |
+| `/helix:implement` | 實作階段（TDD + QA 驗收） |
+| `/helix:qa` | QA 驗收 |
+| `/helix:verify` | 整合驗證 |
+| `/helix:review` | 程式碼審查 |
+| `/helix:handoff` | 交付準備 |
+| `/helix:status` | 查看當前進度 |
+| `/helix:resume` | 從斷點恢復 |
+| `/helix:memory` | 更新 Memory 和 SKILL |
+
+### 自動推進
+
+使用 `/helix:dev <需求描述>` 啟動後，流程會自動推進各階段，僅在需要人類決策時暂停詢問。
 
 ---
 

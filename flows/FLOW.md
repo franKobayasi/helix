@@ -191,25 +191,31 @@ Phase 5: Review & Handoff  →  code-review-report.md, PR 描述, solution.md
 
 ---
 
-## Command Syntax
+## Slash Command
 
-觸發下一階段的命令：
+所有 Helix 命令皆以 `/helix:` 開頭：
 
-```
-start:helix             → 初始化 Helix 流程
-scope:classify          → Scope Classification（Lightweight/Standard/Deep）
-spec:understand         → Stage A: 需求理解摘要（人確認閘）
-spec:develop            → Stage B: 技術方案
-plan:develop            → Plan 拆解
-task:breakdown          → Task 拆分
-implement:start         → 開始實作（TDD + 即時驗收）
-qa:start                → QA 驗收（Task Verification）
-verify:integration      → 整合驗證（Integration Verification）
-review:code             → 程式碼審查
-handoff:prepare         → 交付準備
-update:memory           → 更新 Memory 和 SKILL
-resume                  → 從斷點恢復
-```
+| Command | 說明 |
+|---------|------|
+| `/helix:dev <需求>` | 觸發 Helix 開發流程，自動推進 |
+| `/helix:scope` | Scope Classification（Lightweight/Standard/Deep） |
+| `/helix:spec` | Spec 階段（需求 → 技術規格） |
+| `/helix:plan` | Plan 階段（Spec → Task） |
+| `/helix:implement` | 實作階段（TDD + 即時 QA 驗收） |
+| `/helix:qa` | QA 驗收（Task Verification） |
+| `/helix:verify` | 整合驗證（Integration Verification） |
+| `/helix:review` | 程式碼審查 |
+| `/helix:handoff` | 交付準備 |
+| `/helix:status` | 查看當前進度 |
+| `/helix:resume` | 從斷點恢復 |
+| `/helix:memory` | 更新 Memory 和 SKILL |
+
+### 自動推進行為
+
+`/helix:dev <需求描述>` 啟動後，流程自動執行各階段，僅在以下情况暂停：
+- `spec-clarification`：需求需要釐清
+- `design-risk`：存在重大設計風險
+- `constraint`：遇到外部限制
 
 ---
 

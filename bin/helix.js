@@ -36,15 +36,32 @@ function getHelixAgentContent(helixRelativePath) {
 
 ## Helix Framework
 
+### Slash Command
+
+所有 Helix 命令皆以 \`/helix:\` 開頭：
+
+| Command | 說明 |
+|---------|------|
+| \`/helix:dev <需求>\` | 觸發開發流程，自動推進 |
+| \`/helix:status\` | 查看當前進度 |
+| \`/helix:resume\` | 從斷點恢復 |
+| \`/helix:spec\` | Spec 階段 |
+| \`/helix:plan\` | Plan 階段 |
+| \`/helix:implement\` | 實作階段 |
+| \`/helix:verify\` | 整合驗證 |
+| \`/helix:review\` | 程式碼審查 |
+
 ### 啟動方式
 
-當使用者說「start helix」或「start:helix」時：
+當使用者輸入 \`/helix:dev <需求描述>\` 時，自動執行：
 
 1. **Phase 1: Spec** — 載入 \`${helixRelativePath}/agents/spec-agent.md\` 與 \`${helixRelativePath}/agents/review-agent.md\`，驅動 Spec-Review 對抗式迴圈
 2. **Phase 2: Plan** — 載入 \`${helixRelativePath}/agents/plan-agent.md\` 與 \`${helixRelativePath}/agents/review-agent.md\`（Plan Review 模式）
 3. **Phase 3: Implement** — 依 Task 類型載入 \`${helixRelativePath}/agents/frontend-agent.md\` 或 \`${helixRelativePath}/agents/backend-agent.md\`，搭配 \`${helixRelativePath}/agents/qa-agent.md\` 進行 TDD + 即時驗證
 4. **Phase 4: Integration Verify** — 載入 \`${helixRelativePath}/agents/qa-agent.md\`（整合驗證模式）
 5. **Phase 5: Review & Handoff** — 載入 \`${helixRelativePath}/agents/review-agent.md\`，最終程式碼審查與交付準備
+
+流程自動推進，僅在 \`spec-clarification\`、\`design-risk\`、\`constraint\` 時暫停詢問。
 
 ### Agent 定義檔
 
@@ -63,17 +80,9 @@ function getHelixAgentContent(helixRelativePath) {
 
 所有產出文件放在工作區根目錄的 \`.helix-dev/.spec/{YYYYMMDD}-{slug}/\` 中。
 
-### 關鍵規則
-
-- 預設扮演 **Orchestrator** 角色，驅動流程、在各階段載入對應 agent 定義
-- 進入各階段時，採用對應 agent 定義檔中的人格與規則
-- 僅在需要人做決策時才提問（\`spec-clarification\`、\`design-risk\`、\`constraint\`）
-- 遵守收斂上限（Spec 3 輪、Plan 2 輪、QA 2 輪）
-- 在每個狀態轉換點更新 \`progress.md\`
-
 ### 繼續進行 (Resume)
 
-當使用者說「continue」、「resume」或「繼續」時：
+當使用者輸入 \`/helix:resume\` 時：
 
 1. 掃描 \`.helix-dev/.spec/\` 下的 folder，找到最近更新的 \`progress.md\`
 2. 根據 YAML frontmatter 中的 \`current_phase\` 和 \`current_step\` 判斷當前位置
@@ -93,21 +102,20 @@ function getClaudeMdContent(helixRelativePath) {
 
 ### 啟動方式
 
-當使用者說「start helix」或「start:helix」時，Orchestrator 依以下階段驅動流程：
+輸入 `/helix:dev <需求描述>` 即可啟動 Helix 開發流程，流程會自動推進。
 
-| Phase | 說明 |
-|-------|------|
-| 1. Spec | 需求 → 技術規格（含對抗式審查） |
-| 2. Plan | 規格 → Task 拆解 |
-| 3. Implement | TDD + 即時 QA 驗收 |
-| 4. Integration Verify | 整合測試 + 回歸保護 |
-| 5. Review & Handoff | 程式碼審查 + 知識沈澱 |
+| Command | 說明 |
+|---------|------|
+| \`/helix:dev <需求>\` | 觸發開發流程（自動推進） |
+| \`/helix:status\` | 查看當前進度 |
+| \`/helix:resume\` | 從斷點恢復 |
+| \`/helix:spec\` | Spec 階段 |
+| \`/helix:plan\` | Plan 階段 |
+| \`/helix:implement\` | 實作階段 |
+| \`/helix:verify\` | 整合驗證 |
+| \`/helix:review\` | 程式碼審查 |
 
 詳見 \`${helixRelativePath}/AGENT.md\`。
-
-### 繼續進行 (Resume)
-
-當使用者說「continue」、「resume」或「繼續」時，掃描 \`.helix-dev/.spec/\` 重建進度。
 `;
 }
 
