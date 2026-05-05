@@ -36,6 +36,14 @@ function registerHelixSkill(helixFrameworkDir) {
   const homeDir = os.homedir();
   const claudeSkillsDir = path.join(homeDir, '.claude', 'skills');
   const helixSkillLink = path.join(claudeSkillsDir, 'helix');
+  const helixSkillRoot = path.join(claudeSkillsDir, 'helix');
+
+  // Find SKILL.md - could be at skills/bundled/helix/SKILL.md or at root
+  const skillLocations = [
+    path.join(helixFrameworkDir, 'skills', 'bundled', 'helix', 'SKILL.md'),
+    path.join(helixFrameworkDir, 'SKILL.md')
+  ];
+  const skillSource = skillLocations.find(loc => fs.existsSync(loc));
 
   // Check if skill already registered
   if (fs.existsSync(helixSkillLink)) {
@@ -43,6 +51,11 @@ function registerHelixSkill(helixFrameworkDir) {
     if (stats.isSymbolicLink()) {
       const existingTarget = fs.readlinkSync(helixSkillLink);
       if (existingTarget === helixFrameworkDir) {
+        // Skill already registered, ensure SKILL.md is at root
+        if (skillSource && !fs.existsSync(path.join(helixSkillRoot, 'SKILL.md'))) {
+          fs.copyFileSync(skillSource, path.join(helixSkillRoot, 'SKILL.md'));
+          log('   ✓ SKILL.md copied to skill root', GREEN);
+        }
         log('   ✓ Helix skill already registered', GREEN);
         return false;
       } else {
@@ -63,7 +76,15 @@ function registerHelixSkill(helixFrameworkDir) {
   // Create symlink
   try {
     fs.symlinkSync(helixFrameworkDir, helixSkillLink);
-    log('   ✓ Helix skill registered at ~/.claude/skills/helix', GREEN);
+
+    // Copy SKILL.md to skill root (Claude Code looks for it there)
+    if (skillSource) {
+      fs.copyFileSync(skillSource, path.join(helixSkillRoot, 'SKILL.md'));
+      log('   ✓ Helix skill registered at ~/.claude/skills/helix', GREEN);
+      log('   ✓ SKILL.md copied to skill root', GREEN);
+    } else {
+      log('   ✓ Helix skill registered at ~/.claude/skills/helix (SKILL.md not found)', YELLOW);
+    }
     return true;
   } catch (err) {
     log(`   ⚠ Failed to create skill symlink: ${err.message}`, YELLOW);

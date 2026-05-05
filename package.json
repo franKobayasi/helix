@@ -1,6 +1,6 @@
 {
   "name": "@franKobayasi/helix",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Agent Development Environment that grows with you",
   "bin": "./bin/helix.js",
   "repository": {
