@@ -2,9 +2,7 @@
   "name": "@franKobayasi/helix",
   "version": "1.0.2",
   "description": "Agent Development Environment that grows with you",
-  "bin": {
-    "helix": "./bin/helix.js"
-  },
+  "bin": "./bin/helix.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/franKobayasi/helix.git"
