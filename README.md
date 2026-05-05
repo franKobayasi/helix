@@ -22,7 +22,7 @@ Knowledge compounds over time.
 ### One-line Setup (npx)
 
 ```bash
-npx @frankobayasi/helix
+npx @franKobayasi/helix
 ```
 
 This will automatically create the Helix directory structure and config file in your current project.
