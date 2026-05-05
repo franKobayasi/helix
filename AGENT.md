@@ -144,3 +144,11 @@
 - ❌ 不記錄設計決策 → ✅ Taste 決策必須記錄到 decisions.md
 - ❌ 不問人就做 User Challenge 決策 → ✅ 停下來問人
 - ❌ 忽略 Memory 更新 → ✅ 每個階段結束時更新對應的 Memory
+
+---
+
+## Helix Framework
+
+本專案使用 **Helix** 框架進行 agent-driven 開發。
+
+詳見 `/AGENT.md`。
