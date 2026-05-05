@@ -1,0 +1,148 @@
+# Helix 專案配置
+
+> 此檔案定義 Helix 框架的專案級配置。所有路徑相對於專案根目錄。
+
+---
+
+## 專案資訊
+
+```yaml
+project:
+  name: "[專案名稱]"
+  root: "[專案根目錄絕對路徑]"
+  language: "[主要語言：typescript/python/go/etc]"
+  framework: "[主要框架：react/vue/django/go/etc]"
+
+tech_stack:
+  frontend:
+    framework: "[前端框架]"
+    language: "[語言]"
+    testing: "[測試框架：jest/playwright]"
+    styling: "[樣式方案：css-modules/styled-components/tailwind]"
+  backend:
+    framework: "[後端框架]"
+    language: "[語言]"
+    testing: "[測試框架]"
+    database: "[資料庫]"
+  infrastructure:
+    deploy: "[部署方式]"
+    ci: "[CI 系統]"
+```
+
+---
+
+## Agent 預設配置
+
+```yaml
+agents:
+  default_frontend: "frontend-agent"
+  default_backend: "backend-agent"
+  default_qa: "qa-agent"
+  review_rounds:
+    spec: 3        # Spec Review 上限
+    plan: 2        # Plan Review 上限
+    code: 2        # Code Review 上限
+  escalation:
+    max_attempts: 3  # 每 Task 最大嘗試次數
+    retry_with_fresh_context: true
+```
+
+---
+
+## 流程配置
+
+```yaml
+flow:
+  output_dir: ".helix-dev/.spec"
+  worktree_root: ".worktrees"
+  scopes:
+    lightweight:
+      score_range: "0-2"
+      pipeline: ["implement", "qa", "pr"]
+    standard:
+      score_range: "3-5"
+      pipeline: ["spec", "plan", "implement", "qa", "pr"]
+    deep:
+      score_range: "6-10"
+      pipeline: ["spec", "plan", "implement", "qa", "pr"]
+      deep_clarification: true
+```
+
+---
+
+## Memory 配置
+
+```yaml
+memory:
+  scopes:
+    project:
+      path: "memory/project"
+      auto_update: true
+    domain:
+      path: "memory/domain"
+      auto_update: false
+    global:
+      path: "memory/global"
+      auto_update: false
+  retention:
+    project_level: "session"    # 專案級記憶隨專案結束刪除
+    domain_level: "permanent"   # 領域級記憶保留下來
+    global_level: "permanent"   # 全域級記憶保留下來
+```
+
+---
+
+## SKILL 配置
+
+```yaml
+skills:
+  bundled:
+    - brainstorm
+    - gherkin-scenarios
+    - evidence-classification
+  generated:
+    path: ".helix/skills/generated"
+  imported:
+    path: ".helix/skills/imported"
+  version: "1.0"
+```
+
+---
+
+## 命名規則
+
+```yaml
+naming:
+  integration_branch: "hx/{slug}/integration"
+  task_branch: "hx/{slug}/t{NNN}"
+  worktree_path: ".worktrees/{slug}/t{NNN}/"
+  slug_pattern: "^[a-z0-9-]+$"
+```
+
+---
+
+## 驗證配置
+
+```yaml
+verification:
+  gates:
+    - name: "test"
+      command: "npm test"
+      required: true
+    - name: "lint"
+      command: "npm run lint"
+      required: true
+    - name: "build"
+      command: "npm run build"
+      required: false
+  coverage:
+    minimum: 80
+    frontend:
+      components: true
+      hooks: true
+      integration: true
+    backend:
+      unit: true
+      api: true
+      integration: true
+```
