@@ -19,7 +19,15 @@ Knowledge compounds over time.
 
 ## Quick Start
 
-### 1. 初始化專案
+### One-line Setup (npx)
+
+```bash
+npx @frankobayasi/helix
+```
+
+This will automatically create the Helix directory structure and config file in your current project.
+
+### Manual Setup
 
 ```bash
 cd /path/to/your/project

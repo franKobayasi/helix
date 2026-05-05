@@ -1,0 +1,36 @@
+{
+  "name": "@franKobayasi/helix",
+  "version": "1.0.0",
+  "description": "Agent Development Environment that grows with you",
+  "bin": {
+    "helix": "./bin/helix.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/franKobayasi/helix.git"
+  },
+  "keywords": [
+    "agent",
+    "development",
+    "framework",
+    "autonomous",
+    "workflow",
+    "tdd"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "bin/",
+    "flows/",
+    "agents/",
+    "skills/",
+    "standards/",
+    "templates/",
+    "memory/",
+    "scripts/"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
